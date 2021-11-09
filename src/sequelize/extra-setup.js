@@ -13,7 +13,7 @@ const applyExtraSetup = (sequelize) => {
   pedido.hasMany(detalhespedido);
   pedido.belongsTo(usuario);
 
-  detalhespedido.hasOne(produto);
+  produto.hasMany(detalhespedido);
 };
 
 module.exports = applyExtraSetup;

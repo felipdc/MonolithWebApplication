@@ -20,4 +20,7 @@ module.exports = (sequelize) => sequelize.define('usuario', {
   cep: {
     type: DataTypes.STRING,
   },
+}, {
+  timestamps: false,
+  freezeTableName: true,
 });

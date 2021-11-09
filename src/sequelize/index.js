@@ -1,5 +1,5 @@
 const { Sequelize } = require('sequelize');
-const { applyExtraSetup } = require('./extra-setup');
+const applyExtraSetup = require('./extra-setup');
 
 const modelDefiners = [
   require('./models/cupom.model'),
@@ -8,7 +8,7 @@ const modelDefiners = [
   require('./models/pedido.model'),
   require('./models/produto.model'),
   require('./models/usocupom.model'),
-  require('./models/cupom.model'),
+  require('./models/usuario.model'),
 ];
 
 const sequelize = new Sequelize('postgres', 'postgres', 'password', {
