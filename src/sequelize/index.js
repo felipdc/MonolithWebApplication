@@ -1,17 +1,25 @@
 const { Sequelize } = require('sequelize');
+const { applyExtraSetup } = require('./extra-setup');
+
+const modelDefiners = [
+  require('./models/cupom.model'),
+  require('./models/detalhespedido.model'),
+  require('./models/parcelapagamento.model'),
+  require('./models/pedido.model'),
+  require('./models/produto.model'),
+  require('./models/usocupom.model'),
+  require('./models/cupom.model'),
+];
 
 const sequelize = new Sequelize('postgres', 'postgres', 'password', {
   host: 'localhost',
   dialect: 'postgres',
 });
 
-const connect = async () => {
-  try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-};
+modelDefiners.forEach((modelDefiner) => {
+  modelDefiner(sequelize);
+});
 
-module.exports = connect;
+applyExtraSetup(sequelize);
+
+module.exports = sequelize;
