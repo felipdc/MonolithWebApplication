@@ -23,7 +23,6 @@ app.get('/health', (req, res) => {
   res.send('OK');
 });
 
-// We define the standard REST APIs for each route (if they exist).
 for (const [routeName, routeController] of Object.entries(routes)) {
   if (routeController.getAll) {
     app.get(
@@ -45,13 +44,13 @@ for (const [routeName, routeController] of Object.entries(routes)) {
   }
   if (routeController.update) {
     app.put(
-      `/api/${routeName}/:id`,
+      `/api/${routeName}`,
       makeHandlerAwareOfAsyncErrors(routeController.update),
     );
   }
   if (routeController.remove) {
     app.delete(
-      `/api/${routeName}/:id`,
+      `/api/${routeName}`,
       makeHandlerAwareOfAsyncErrors(routeController.remove),
     );
   }

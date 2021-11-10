@@ -1,13 +1,14 @@
 const { models } = require('../../sequelize');
+const { createUser, updateUser, removeUser } = require('../controllers/user');
 
-const getAll = async (req, res) => {
+const getAll = async (_req, res) => {
   const users = await models.usuario.findAll();
   res.status(200).json(users);
 };
 
 const getByEmail = async (req, res) => {
   const { email } = req.params;
-  const user = await models.user.findByPk(email);
+  const user = await models.usuario.findByPk(email);
   if (user) {
     res.status(200).json(user);
   } else {
@@ -16,41 +17,36 @@ const getByEmail = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  await models.user.create(req.body);
-  res.status(201).end();
+  try {
+    await createUser(req.body);
+  } catch (err) {
+    res.status(err.statusCode || 500).send(err.message || 'Internal Server Error');
+  }
+  res.status(200).end();
 };
 
-// const update = async (req, res) => {
-//   const id = getIdParam(req);
+const update = async (req, res) => {
+  try {
+    await updateUser(req.body);
+  } catch (err) {
+    res.status(err.statusCode || 500).send(err.message || 'Internal Server Error');
+  }
+  res.status(200).end();
+};
 
-//   // We only accept an UPDATE request if the `:id` param matches the body `id`
-//   if (req.body.id === id) {
-//     await models.user.update(req.body, {
-//       where: {
-//         id,
-//       },
-//     });
-//     res.status(200).end();
-//   } else {
-//     res.status(400).send(`Bad request: param ID
-// (${id}) does not match body ID (${req.body.id}).`);
-//   }
-// };
-
-// const remove = async (req, res) => {
-//   const id = getIdParam(req);
-//   await models.user.destroy({
-//     where: {
-//       id,
-//     },
-//   });
-//   res.status(200).end();
-// };
+const remove = async (req, res) => {
+  try {
+    await removeUser(req.body);
+  } catch (err) {
+    res.status(err.statusCode || 500).send(err.message || 'Internal Server Error');
+  }
+  res.status(200).end();
+};
 
 module.exports = {
   getAll,
   getByEmail,
   create,
-  // update,
-  // remove,
+  update,
+  remove,
 };

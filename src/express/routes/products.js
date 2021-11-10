@@ -1,7 +1,8 @@
 const { models } = require('../../sequelize');
-const { getIdParam } = require('../helpers');
+const { getIdParam } = require('../helpers/helpers');
+const { createProduct, updateProduct } = require('../controllers/product');
 
-const getAll = async (req, res) => {
+const getAll = async (_req, res) => {
   const products = await models.produto.findAll();
   res.status(200).json(products);
 };
@@ -17,26 +18,22 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  await models.produto.create(req.body);
-  res.status(201).end();
+  try {
+    await createProduct(req.body);
+  } catch (err) {
+    res.status(err.statusCode || 500).send(err.message || 'Internal Server Error');
+  }
+  res.status(200).end();
 };
 
-// const update = async (req, res) => {
-//   const id = getIdParam(req);
-
-//   // We only accept an UPDATE request if the `:id` param matches the body `id`
-//   if (req.body.id === id) {
-//     await models.user.update(req.body, {
-//       where: {
-//         id,
-//       },
-//     });
-//     res.status(200).end();
-//   } else {
-//     res.status(400).send(`Bad request: param ID
-// (${id}) does not match body ID (${req.body.id}).`);
-//   }
-// };
+const update = async (req, res) => {
+  try {
+    await updateProduct(req.body);
+  } catch (err) {
+    res.status(err.statusCode || 500).send(err.message || 'Internal Server Error');
+  }
+  res.status(200).end();
+};
 
 // const remove = async (req, res) => {
 //   const id = getIdParam(req);
@@ -52,6 +49,6 @@ module.exports = {
   getAll,
   getById,
   create,
-  // update,
+  update,
   // remove,
 };
