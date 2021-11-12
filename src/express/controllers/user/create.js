@@ -37,8 +37,14 @@ const createUser = async (body) => {
   if (!userCreateParams) {
     throw new ResponseError(400, 'Error. Invalid Params');
   }
-
-  await models.usuario.create(userCreateParams);
+  try {
+    await models.usuario.create(userCreateParams);
+  } catch (err) {
+    console.log(err);
+    if (err.errors[0].type === 'unique violation') {
+      throw new ResponseError(409, 'Error. User already exists');
+    } else throw new ResponseError(500, 'Internal Server Errror');
+  }
   return 0;
 };
 

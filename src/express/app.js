@@ -4,6 +4,7 @@ const express = require('express');
 const routes = {
   users: require('./routes/users'),
   products: require('./routes/products'),
+  coupons: require('./routes/coupons'),
 };
 
 const app = express();
@@ -23,13 +24,11 @@ app.get('/health', (req, res) => {
   res.send('OK');
 });
 
-// app.put('/api/products/consume', makeHandlerAwareOfAsyncErrors(routes.products.consume));
-
 for (const [routeName, routeController] of Object.entries(routes)) {
-  if (routeController.getAll) {
+  if (routeController.get) {
     app.get(
       `/api/${routeName}`,
-      makeHandlerAwareOfAsyncErrors(routeController.getAll),
+      makeHandlerAwareOfAsyncErrors(routeController.get),
     );
   }
   if (routeController.getById) {

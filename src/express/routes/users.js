@@ -1,18 +1,19 @@
 const { models } = require('../../sequelize');
-const { createUser, updateUser, removeUser } = require('../controllers/user');
+const {
+  createUser, updateUser, removeUser, getUser,
+} = require('../controllers/user');
 
-const getAll = async (_req, res) => {
-  const users = await models.usuario.findAll();
-  res.status(200).json(users);
-};
-
-const getByEmail = async (req, res) => {
-  const { email } = req.params;
-  const user = await models.usuario.findByPk(email);
-  if (user) {
-    res.status(200).json(user);
+const get = async (req, res) => {
+  if (req.query.email) {
+    const user = await getUser(req.query.email);
+    if (!user) {
+      res.status(404).send('404 - User not found');
+    } else {
+      res.status(200).json(user);
+    }
   } else {
-    res.status(404).send('404 - Not found');
+    const users = await models.usuario.findAll();
+    res.status(200).json(users);
   }
 };
 
@@ -44,8 +45,7 @@ const remove = async (req, res) => {
 };
 
 module.exports = {
-  getAll,
-  getByEmail,
+  get,
   create,
   update,
   remove,

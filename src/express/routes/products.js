@@ -4,7 +4,7 @@ const {
   createProduct, updateProduct, getProduct, removeProduct,
 } = require('../controllers/product');
 
-const getAll = async (_req, res) => {
+const get = async (_req, res) => {
   const products = await models.produto.findAll();
   res.status(200).json(products);
 };
@@ -47,7 +47,7 @@ const remove = async (req, res) => {
 };
 
 module.exports = {
-  getAll,
+  get,
   getById,
   create,
   update,

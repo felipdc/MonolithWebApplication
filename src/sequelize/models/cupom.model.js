@@ -11,7 +11,16 @@ module.exports = (sequelize) => sequelize.define('cupom', {
   desconto: {
     type: DataTypes.STRING,
   },
+  tipodesconto: {
+    type: DataTypes.STRING,
+  },
   status: {
     type: DataTypes.STRING,
   },
+  validade: {
+    type: DataTypes.DATE,
+  },
+}, {
+  timestamps: false,
+  freezeTableName: true,
 });
