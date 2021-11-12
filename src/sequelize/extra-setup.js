@@ -1,6 +1,6 @@
 const applyExtraSetup = (sequelize) => {
   const {
-    cupom, usuario, pedido, usocupom, detalhespedido, parcelapagamento, produto,
+    cupom, usuario, pedido, usocupom, itempedido, parcelapagamento, produto,
   } = sequelize.models;
 
   usuario.hasMany(pedido);
@@ -10,14 +10,14 @@ const applyExtraSetup = (sequelize) => {
   cupom.hasMany(pedido);
 
   pedido.hasMany(parcelapagamento);
-  pedido.hasMany(detalhespedido);
+  pedido.hasMany(itempedido);
   pedido.belongsTo(usuario);
   pedido.belongsTo(cupom);
 
   usocupom.belongsTo(cupom);
   usocupom.belongsTo(usuario);
 
-  produto.hasMany(detalhespedido);
+  produto.hasMany(itempedido);
 };
 
 module.exports = applyExtraSetup;

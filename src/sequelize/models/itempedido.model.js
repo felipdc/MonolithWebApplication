@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 
-module.exports = (sequelize) => sequelize.define('detalhespedido', {
+module.exports = (sequelize) => sequelize.define('itempedido', {
   id: {
     allowNull: false,
     autoIncrement: true,
