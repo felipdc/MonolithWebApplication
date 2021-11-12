@@ -23,6 +23,8 @@ app.get('/health', (req, res) => {
   res.send('OK');
 });
 
+// app.put('/api/products/consume', makeHandlerAwareOfAsyncErrors(routes.products.consume));
+
 for (const [routeName, routeController] of Object.entries(routes)) {
   if (routeController.getAll) {
     app.get(
