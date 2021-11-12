@@ -5,6 +5,8 @@ const routes = {
   users: require('./routes/users'),
   products: require('./routes/products'),
   coupons: require('./routes/coupons'),
+  orders: require('./routes/orders'),
+  couponusages: require('./routes/couponUsages'),
 };
 
 const app = express();

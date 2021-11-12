@@ -12,6 +12,10 @@ const applyExtraSetup = (sequelize) => {
   pedido.hasMany(parcelapagamento);
   pedido.hasMany(detalhespedido);
   pedido.belongsTo(usuario);
+  pedido.belongsTo(cupom);
+
+  usocupom.belongsTo(cupom);
+  usocupom.belongsTo(usuario);
 
   produto.hasMany(detalhespedido);
 };

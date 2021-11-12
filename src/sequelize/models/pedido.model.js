@@ -9,15 +9,12 @@ module.exports = (sequelize) => sequelize.define('pedido', {
   },
   precototal: {
     type: DataTypes.INTEGER,
-    allowNull: false,
   },
   precofinal: {
     type: DataTypes.INTEGER,
-    allowNull: false,
   },
   status: {
     type: DataTypes.STRING,
-    allowNull: false,
   },
   tipopagamento: {
     type: DataTypes.STRING,
@@ -28,4 +25,7 @@ module.exports = (sequelize) => sequelize.define('pedido', {
   data: {
     type: DataTypes.DATE,
   },
+}, {
+  timestamps: false,
+  freezeTableName: true,
 });
