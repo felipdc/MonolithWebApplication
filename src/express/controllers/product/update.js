@@ -19,7 +19,7 @@ const schema = Joi.alternatives().try(
     nome: Joi.string().forbidden(),
     categoria: Joi.string().forbidden(),
     preço: Joi.number().forbidden(),
-    quantidade: Joi.number().min(0).required(),
+    quantidade: Joi.number().required(),
     retirar: Joi.bool().required(),
   }),
 );

@@ -1,7 +1,7 @@
 const { models } = require('../../sequelize');
 const { getIdParam } = require('../helpers/helpers');
 const {
-  getOrderItem, createOrderItem,
+  getOrderItem, createOrderItem, removeOrderItem,
 } = require('../controllers/orderItem');
 
 const get = async (_req, res) => {
@@ -37,9 +37,19 @@ const create = async (req, res) => {
 //   res.status(200).end();
 // };
 
+const remove = async (req, res) => {
+  try {
+    await removeOrderItem(req.body);
+  } catch (err) {
+    res.status(err.statusCode || 500).send(err.message || 'Internal Server Error');
+  }
+  res.status(200).end();
+};
+
 module.exports = {
   get,
   getById,
   create,
+  remove,
   // update,
 };

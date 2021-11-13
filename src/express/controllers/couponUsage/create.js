@@ -39,7 +39,7 @@ const validateCouponUsage = async (body) => {
   }
 };
 
-const createCouponUsage = async (body) => {
+const createCouponUsage = async (body, transaction = null) => {
   const couponUsageCreationParams = getCouponUsageCreationParams(body);
 
   console.log(couponUsageCreationParams);
@@ -51,7 +51,7 @@ const createCouponUsage = async (body) => {
   await validateCouponUsage(body);
 
   try {
-    await models.usocupom.create(couponUsageCreationParams);
+    await models.usocupom.create(couponUsageCreationParams, { transaction });
   } catch (err) {
     if (err.errors[0].type === 'unique violation') {
       throw new ResponseError(409, 'Error. User already used this coupon');

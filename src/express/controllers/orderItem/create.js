@@ -63,6 +63,7 @@ const transactionUpdate = async (params) => {
 
     await models.itempedido.create(params, { transaction: t });
   } catch (err) {
+    console.log(err);
     await t.rollback();
     throw new Error(err);
   }

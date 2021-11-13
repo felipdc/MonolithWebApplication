@@ -5,6 +5,7 @@ const { getCoupon } = require('../coupon');
 const { createCouponUsage } = require('../couponUsage');
 const { models } = require('../../../sequelize');
 const { ResponseError } = require('../../helpers/errors');
+const sequelize = require('../../../sequelize');
 
 const schema = Joi.object().keys({
   usuarioEmail: Joi.string().required(),
@@ -40,12 +41,26 @@ const validateOrder = async (params) => {
   if (params.cupomCodigo) {
     const coupon = await getCoupon(params.cupomCodigo);
     if (!coupon) throw new ResponseError(404, 'Error. Coupon provided was not found');
-
-    await createCouponUsage({
-      usuarioEmail: params.usuarioEmail,
-      cupomCodigo: params.cupomCodigo,
-    });
   }
+};
+
+const transactionCreate = async (params) => {
+  const t = await sequelize.transaction();
+  try {
+    if (params.cupomCodigo) {
+      await createCouponUsage({
+        usuarioEmail: params.usuarioEmail,
+        cupomCodigo: params.cupomCodigo,
+      }, t);
+    }
+
+    await models.pedido.create(params, { transaction: t });
+  } catch (err) {
+    console.log(err);
+    await t.rollback();
+    throw new Error(err);
+  }
+  await t.commit();
 };
 
 const createOrder = async (body) => {
@@ -57,7 +72,7 @@ const createOrder = async (body) => {
 
   await validateOrder(orderCreationParams);
 
-  await models.pedido.create(orderCreationParams);
+  await transactionCreate(orderCreationParams);
 
   return 0;
 };
