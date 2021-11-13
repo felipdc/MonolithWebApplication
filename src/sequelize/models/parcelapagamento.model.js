@@ -13,7 +13,6 @@ module.exports = (sequelize) => sequelize.define('parcelapagamento', {
   },
   status: {
     type: DataTypes.STRING,
-    allowNull: false,
   },
   datalimite: {
     type: DataTypes.DATE,
@@ -21,4 +20,7 @@ module.exports = (sequelize) => sequelize.define('parcelapagamento', {
   datapagamento: {
     type: DataTypes.DATE,
   },
+}, {
+  timestamps: false,
+  freezeTableName: true,
 });
