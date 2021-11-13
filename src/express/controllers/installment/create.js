@@ -1,5 +1,6 @@
 const _ = require('lodash');
-const Joi = require('joi').extend(require('@joi/date'));
+const Joi = require('joi');
+const { format, addMonths } = require('date-fns');
 const getOrder = require('../order/get');
 const { models } = require('../../../sequelize');
 const { ResponseError } = require('../../helpers/errors');
@@ -8,11 +9,12 @@ const schema = Joi.object().keys({
   pedidoId: Joi.number().required(),
   valor: Joi.number().required(),
   datalimite: Joi.string(),
+  numeroparcela: Joi.number().required(),
 });
 
 const getInstallmentCreationParams = (params) => {
   const {
-    id, pedidoId, valor, datalimite,
+    id, pedidoId, valor, datalimite, numeroparcela,
   } = params;
   try {
     Joi.assert(params, schema);
@@ -23,7 +25,9 @@ const getInstallmentCreationParams = (params) => {
     id,
     pedidoId,
     valor,
-    datalimite,
+    datalimite: !datalimite ? format(addMonths(new Date(), numeroparcela + 1), 'yyyy-MM-dd HH:mm:ss.SSS') : null,
+    status: 'pagamento pendente',
+    numeroparcela,
   }, _.isNil);
 };
 

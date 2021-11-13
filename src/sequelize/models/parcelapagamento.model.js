@@ -14,6 +14,9 @@ module.exports = (sequelize) => sequelize.define('parcelapagamento', {
   status: {
     type: DataTypes.STRING,
   },
+  numeroparcela: {
+    type: DataTypes.INTEGER,
+  },
   datalimite: {
     type: DataTypes.DATE,
   },

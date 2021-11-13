@@ -119,9 +119,10 @@ const concludeAndValidateOrder = async (params) => {
 
   try {
     const installments = new Array(params.qtdparcelas).fill(0);
-    await Promise.all(installments.map(() => createInstallment({
+    await Promise.all(installments.map((__, installmenteNumber) => createInstallment({
       pedidoId: params.id,
       valor: order.precototal / params.qtdparcelas,
+      numeroparcela: installmenteNumber,
     }, t)));
 
     await models.pedido.update(concludeOrderParams, {

@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@joi/date": "^2.1.0",
+    "date-fns": "^2.25.0",
     "espree": "^9.0.0",
     "express": "^4.17.1",
     "joi": "^17.4.2",
