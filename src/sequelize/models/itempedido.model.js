@@ -9,8 +9,9 @@ module.exports = (sequelize) => sequelize.define('itempedido', {
   },
   quantidade: {
     type: DataTypes.INTEGER,
+    allowNull: false,
   },
-  preco: {
-    type: DataTypes.INTEGER,
-  },
+}, {
+  timestamps: false,
+  freezeTableName: true,
 });

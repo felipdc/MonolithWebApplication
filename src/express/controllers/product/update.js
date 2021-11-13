@@ -77,7 +77,7 @@ const getAndValidateProduct = async (id, params) => {
   return _.omit(newParams, ['retirar']);
 };
 
-const updateProduct = async (body) => {
+const updateProduct = async (body, transaction = null) => {
   let productUpdateParams = getProductUpdateParams(body);
 
   if (!productUpdateParams) {
@@ -90,6 +90,7 @@ const updateProduct = async (body) => {
     where: {
       id: body.id,
     },
+    transaction,
   });
 
   return 0;

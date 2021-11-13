@@ -3,7 +3,7 @@ const applyExtraSetup = require('./extra-setup');
 
 const modelDefiners = [
   require('./models/cupom.model'),
-  require('./models/detalhespedido.model'),
+  require('./models/itempedido.model'),
   require('./models/parcelapagamento.model'),
   require('./models/pedido.model'),
   require('./models/produto.model'),

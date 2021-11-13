@@ -57,11 +57,7 @@ const createOrder = async (body) => {
 
   await validateOrder(orderCreationParams);
 
-  try {
-    await models.pedido.create(orderCreationParams);
-  } catch (err) {
-    console.log(err);
-  }
+  await models.pedido.create(orderCreationParams);
 
   return 0;
 };

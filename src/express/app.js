@@ -7,6 +7,7 @@ const routes = {
   coupons: require('./routes/coupons'),
   orders: require('./routes/orders'),
   couponusages: require('./routes/couponUsages'),
+  orderitems: require('./routes/orderItems'),
 };
 
 const app = express();
