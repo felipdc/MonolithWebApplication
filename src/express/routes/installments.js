@@ -2,6 +2,7 @@ const { models } = require('../../sequelize');
 const {
   createInstallment,
   getInstallment,
+  updateInstallment,
 } = require('../controllers/installment');
 
 const get = async (req, res) => {
@@ -23,7 +24,17 @@ const create = async (req, res) => {
   res.status(200).end();
 };
 
+const update = async (req, res) => {
+  try {
+    await updateInstallment(req.body);
+  } catch (err) {
+    res.status(err.statusCode || 500).send(err.message || 'Internal Server Error');
+  }
+  res.status(200).end();
+};
+
 module.exports = {
   get,
   create,
+  update,
 };

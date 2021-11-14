@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const Joi = require('joi');
 const sequelize = require('../../../sequelize');
-const { getOrder, updateOrder } = require('../order');
+const { updateOrder } = require('../order');
 const getInstallment = require('./get');
 const { models } = require('../../../sequelize');
 const { ResponseError } = require('../../helpers/errors');
@@ -25,9 +25,8 @@ const getInstallmentUpdateParams = (params) => {
   }, _.isNil);
 };
 
-const validateInstallment = async (params) => {
-  const installment = await getInstallment(params.id);
-
+const validateInstallment = async (id, params) => {
+  const installment = await getInstallment(id);
   if (!installment) {
     throw new ResponseError(404, 'Error. Installment provided was not found');
   }
@@ -39,22 +38,28 @@ const validateInstallment = async (params) => {
 
 const isLastInstallment = async (id) => {
   const installment = await getInstallment(id);
-  const order = await getOrder(installment.pedidoId);
 
-  if (installment.numeroparcela === order.qtdparcelas - 1) {
-    return true;
-  }
-  return false;
+  const orderInstallments = await getInstallment(null, {
+    pedidoId: installment.pedidoId,
+  });
+
+  if (orderInstallments.length === 1) return true;
+
+  _.remove(orderInstallments, (_installment) => _installment.id === id);
+
+  return orderInstallments.every((_installment) => _installment.status === 'aprovado');
 };
 
 const updateOrderAndInstallment = async (id, params) => {
   const installment = await getInstallment(id);
   const t = await sequelize.transaction();
+  console.log(params);
   try {
     await updateOrder({
-      id: installment.id,
+      id: installment.pedidoId,
       status: 'pago',
     });
+
     await models.parcelapagamento.update(params, {
       where: {
         id,
@@ -66,6 +71,7 @@ const updateOrderAndInstallment = async (id, params) => {
     await t.rollback();
     throw err;
   }
+  await t.commit();
 };
 
 const updateInstallment = async (body, transaction = null) => {
@@ -75,14 +81,17 @@ const updateInstallment = async (body, transaction = null) => {
     throw new ResponseError(400, 'Error. Invalid Params');
   }
 
-  await validateInstallment(installmentUpdateParams);
+  await validateInstallment(body.id, installmentUpdateParams);
 
-  if (await isLastInstallment(body.id)) {
+  if (await isLastInstallment(body.id) && installmentUpdateParams.status === 'aprovado') {
     await updateOrderAndInstallment(body.id, installmentUpdateParams);
     return 0;
   }
 
   await models.parcelapagamento.update(installmentUpdateParams, {
+    where: {
+      id: body.id,
+    },
     transaction,
   });
 
