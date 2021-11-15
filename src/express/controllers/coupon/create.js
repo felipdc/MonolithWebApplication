@@ -7,7 +7,7 @@ const schema = Joi.object().keys({
   codigo: Joi.string().required(),
   descricao: Joi.string(),
   desconto: Joi.number().required(),
-  tipodesconto: Joi.string().required(),
+  tipodesconto: Joi.string().valid('absoluto', 'porcentagem').required(),
   status: Joi.string(),
   validade: Joi.string(),
 });
@@ -40,14 +40,15 @@ const createCoupon = async (body) => {
     throw new ResponseError(400, 'Error. Invalid Params');
   }
 
+  let newCoupon;
   try {
-    await models.cupom.create(couponCreationParams);
+    newCoupon = await models.cupom.create(couponCreationParams);
   } catch (err) {
     if (err.errors[0].type === 'unique violation') {
       throw new ResponseError(409, 'Error. Coupon already exists');
     }
   }
-  return 0;
+  return newCoupon.toJSON();
 };
 
 module.exports = createCoupon;

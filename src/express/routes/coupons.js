@@ -31,21 +31,23 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
+  let coupon;
   try {
-    await createCoupon(req.body);
+    coupon = await createCoupon(req.body);
   } catch (err) {
     res.status(err.statusCode || 500).send(err.message || 'Internal Server Error');
   }
-  res.status(200).end();
+  res.status(200).send(coupon);
 };
 
 const update = async (req, res) => {
+  let coupon;
   try {
-    await updateCoupon(req.body);
+    coupon = await updateCoupon(req.body);
   } catch (err) {
     res.status(err.statusCode || 500).send(err.message || 'Internal Server Error');
   }
-  res.status(200).end();
+  res.status(200).send(coupon);
 };
 
 // const remove = async (req, res) => {

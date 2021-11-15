@@ -93,7 +93,6 @@ describe(('Product CRUD Tests'), () => {
         });
         fail('Expected Not Found response');
       } catch (err) {
-        console.log(err);
         expect(err.response.status).toEqual(406);
       }
     });

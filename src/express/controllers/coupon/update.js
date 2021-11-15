@@ -48,13 +48,14 @@ const updateCoupon = async (body) => {
 
   await validateCoupon(body.codigo);
 
-  await models.cupom.update(couponUpdateParams, {
+  const updatedCoupon = await models.cupom.update(couponUpdateParams, {
     where: {
       codigo: body.codigo,
     },
+    returning: true,
   });
 
-  return 0;
+  return updatedCoupon[1][0];
 };
 
 module.exports = updateCoupon;
