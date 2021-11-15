@@ -117,19 +117,21 @@ const concludeAndValidateOrder = async (params) => {
 
   const t = await sequelize.transaction();
 
+  let updatedOrder;
   try {
     const installments = new Array(params.qtdparcelas).fill(0);
     await Promise.all(installments.map((__, installmenteNumber) => createInstallment({
       pedidoId: params.id,
-      valor: order.precototal / params.qtdparcelas,
+      valor: _.ceil(order.precofinal / params.qtdparcelas),
       numeroparcela: installmenteNumber,
     }, t)));
 
-    await models.pedido.update(concludeOrderParams, {
+    updatedOrder = await models.pedido.update(concludeOrderParams, {
       where: {
         id: params.id,
       },
       transaction: t,
+      returning: true,
     });
   } catch (err) {
     console.log(err);
@@ -138,6 +140,8 @@ const concludeAndValidateOrder = async (params) => {
   }
 
   await t.commit();
+
+  return updatedOrder;
 };
 
 const updateOrder = async (body, transaction = null) => {
@@ -148,23 +152,24 @@ const updateOrder = async (body, transaction = null) => {
   }
 
   if (orderUpdateParams.concluirPedido) {
-    await concludeAndValidateOrder({
+    const updatedOrder = await concludeAndValidateOrder({
       id: body.id,
       ...orderUpdateParams,
     });
-    return 0;
+    return updatedOrder[1][0];
   }
 
   orderUpdateParams = await getAndValidateOrder(body.id, orderUpdateParams);
 
-  await models.pedido.update(orderUpdateParams, {
+  const updatedOrder = await models.pedido.update(orderUpdateParams, {
     where: {
       id: body.id,
     },
     transaction,
+    returning: true,
   });
 
-  return 0;
+  return updatedOrder[1][0];
 };
 
 module.exports = updateOrder;

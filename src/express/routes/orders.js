@@ -20,21 +20,23 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
+  let order;
   try {
-    await createOrder(req.body);
+    order = await createOrder(req.body);
   } catch (err) {
     res.status(err.statusCode || 500).send(err.message || 'Internal Server Error');
   }
-  res.status(200).end();
+  res.status(200).send(order);
 };
 
 const update = async (req, res) => {
+  let order;
   try {
-    await updateOrder(req.body);
+    order = await updateOrder(req.body);
   } catch (err) {
     res.status(err.statusCode || 500).send(err.message || 'Internal Server Error');
   }
-  res.status(200).end();
+  res.status(200).send(order);
 };
 
 module.exports = {

@@ -6,7 +6,7 @@ const {
 } = require('../controllers/installment');
 
 const get = async (req, res) => {
-  if (req.query.id) {
+  if (req.query.id || req.query.where) {
     const installment = await getInstallment(req.query);
     res.status(200).json(installment);
   } else {

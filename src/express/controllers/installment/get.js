@@ -1,11 +1,11 @@
 const { models } = require('../../../sequelize');
 
-const getInstallment = async (id, where = null) => {
-  if (!where) {
-    return models.parcelapagamento.findByPk(id);
+const getInstallment = async (params) => {
+  if (!params.where) {
+    return models.parcelapagamento.findByPk(params.id);
   }
   return models.parcelapagamento.findAll({
-    where,
+    where: JSON.parse(params.where),
   });
 };
 

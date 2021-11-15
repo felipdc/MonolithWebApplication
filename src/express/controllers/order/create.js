@@ -46,6 +46,7 @@ const validateOrder = async (params) => {
 
 const transactionCreate = async (params) => {
   const t = await sequelize.transaction();
+  let newOrder;
   try {
     if (params.cupomCodigo) {
       await createCouponUsage({
@@ -54,13 +55,14 @@ const transactionCreate = async (params) => {
       }, t);
     }
 
-    await models.pedido.create(params, { transaction: t });
+    newOrder = await models.pedido.create(params, { transaction: t });
   } catch (err) {
     console.log(err);
     await t.rollback();
     throw new Error(err);
   }
   await t.commit();
+  return newOrder;
 };
 
 const createOrder = async (body) => {
@@ -72,9 +74,9 @@ const createOrder = async (body) => {
 
   await validateOrder(orderCreationParams);
 
-  await transactionCreate(orderCreationParams);
+  const newOrder = await transactionCreate(orderCreationParams);
 
-  return 0;
+  return newOrder.toJSON();
 };
 
 module.exports = createOrder;

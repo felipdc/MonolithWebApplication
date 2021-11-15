@@ -26,7 +26,7 @@ const getInstallmentUpdateParams = (params) => {
 };
 
 const validateInstallment = async (id, params) => {
-  const installment = await getInstallment(id);
+  const installment = await getInstallment({ id });
   if (!installment) {
     throw new ResponseError(404, 'Error. Installment provided was not found');
   }
@@ -37,11 +37,15 @@ const validateInstallment = async (id, params) => {
 };
 
 const isLastInstallment = async (id) => {
-  const installment = await getInstallment(id);
+  const installment = await getInstallment({ id });
 
-  const orderInstallments = await getInstallment(null, {
-    pedidoId: installment.pedidoId,
+  const orderInstallments = await getInstallment({
+    where: JSON.stringify({
+      pedidoId: installment.pedidoId,
+    }),
   });
+
+  console.log(orderInstallments);
 
   if (orderInstallments.length === 1) return true;
 
@@ -51,7 +55,7 @@ const isLastInstallment = async (id) => {
 };
 
 const updateOrderAndInstallment = async (id, params) => {
-  const installment = await getInstallment(id);
+  const installment = await getInstallment({ id });
   const t = await sequelize.transaction();
   console.log(params);
   try {

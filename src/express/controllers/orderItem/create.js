@@ -47,8 +47,9 @@ const getPrice = async (params) => {
   return params.quantidade * product.preço;
 };
 
-const transactionUpdate = async (params) => {
+const transactionCreate = async (params) => {
   const t = await sequelize.transaction();
+  let newOrderItem;
   try {
     await updateProduct({
       id: params.produtoId,
@@ -61,13 +62,14 @@ const transactionUpdate = async (params) => {
       precoAdicional: await getPrice(params),
     }, t);
 
-    await models.itempedido.create(params, { transaction: t });
+    newOrderItem = await models.itempedido.create(params, { transaction: t });
   } catch (err) {
     console.log(err);
     await t.rollback();
     throw new Error(err);
   }
   await t.commit();
+  return newOrderItem;
 };
 
 const createOrderItem = async (body) => {
@@ -79,9 +81,9 @@ const createOrderItem = async (body) => {
 
   await validateOrderItem(orderItemCreationParams);
 
-  await transactionUpdate(orderItemCreationParams);
+  const newOrderItem = await transactionCreate(orderItemCreationParams);
 
-  return 0;
+  return newOrderItem.toJSON();
 };
 
 module.exports = createOrderItem;
