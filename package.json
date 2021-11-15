@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon node src/index.js"
+    "start": "nodemon node src/index.js",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -25,6 +26,8 @@
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.25.2",
-    "nodemon": "^2.0.15"
+    "jest": "^27.3.1",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.1.6"
   }
 }
