@@ -45,7 +45,7 @@ const getProductUpdateParams = (params) => {
     return null;
   }
   return _.omitBy({
-    nome: nome ? _.capitalize(nome) : null,
+    nome,
     categoria,
     preço,
     quantidade,
@@ -86,14 +86,15 @@ const updateProduct = async (body, transaction = null) => {
 
   productUpdateParams = await getAndValidateProduct(body.id, productUpdateParams);
 
-  await models.produto.update(productUpdateParams, {
+  const updatedProduct = await models.produto.update(productUpdateParams, {
     where: {
       id: body.id,
     },
     transaction,
+    returning: true,
   });
 
-  return 0;
+  return updatedProduct[1][0];
 };
 
 module.exports = updateProduct;

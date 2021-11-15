@@ -20,30 +20,33 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
+  let product;
   try {
-    await createProduct(req.body);
+    product = await createProduct(req.body);
   } catch (err) {
     res.status(err.statusCode || 500).send(err.message || 'Internal Server Error');
   }
-  res.status(200).end();
+  res.status(200).json(product);
 };
 
 const update = async (req, res) => {
+  let product;
   try {
-    await updateProduct(req.body);
+    product = await updateProduct(req.body);
   } catch (err) {
     res.status(err.statusCode || 500).send(err.message || 'Internal Server Error');
   }
-  res.status(200).end();
+  res.status(200).json(product);
 };
 
 const remove = async (req, res) => {
+  let product;
   try {
-    await removeProduct(req.body);
+    product = await removeProduct(req.body);
   } catch (err) {
     res.status(err.statusCode || 500).send(err.message || 'Internal Server Error');
   }
-  res.status(200).end();
+  res.status(200).json(product);
 };
 
 module.exports = {

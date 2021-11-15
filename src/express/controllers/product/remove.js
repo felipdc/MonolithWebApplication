@@ -41,13 +41,14 @@ const removeProduct = async (body) => {
 
   await validateProduct(body.id);
 
-  await models.produto.update(productRemoveParams, {
+  const removedProduct = await models.produto.update(productRemoveParams, {
     where: {
       id: body.id,
     },
+    returning: true,
   });
 
-  return 0;
+  return removedProduct[1][0];
 };
 
 module.exports = removeProduct;

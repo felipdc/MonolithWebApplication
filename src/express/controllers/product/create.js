@@ -20,7 +20,7 @@ const getProductCreationParams = (params) => {
     return null;
   }
   return _.omitBy({
-    nome: nome ? _.capitalize(nome) : null,
+    nome,
     categoria,
     preço,
     quantidade,
@@ -35,8 +35,8 @@ const createProduct = async (body) => {
     throw new ResponseError(400, 'Error. Invalid Params');
   }
 
-  await models.produto.create(productCreateParams);
-  return 0;
+  const newProduct = await models.produto.create(productCreateParams);
+  return newProduct.toJSON();
 };
 
 module.exports = createProduct;
