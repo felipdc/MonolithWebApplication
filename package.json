@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@joi/date": "^2.1.0",
+    "axios": "^0.24.0",
     "date-fns": "^2.25.0",
     "espree": "^9.0.0",
     "express": "^4.17.1",
@@ -23,6 +24,7 @@
     "sequelizer": "^1.1.4"
   },
   "devDependencies": {
+    "chance": "^1.1.8",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.25.2",

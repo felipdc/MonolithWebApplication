@@ -23,7 +23,7 @@ const getUserUpdateParams = (params) => {
     return null;
   }
   return _.omitBy({
-    nome: nome ? _.capitalize(nome) : null,
+    nome,
     telefone,
     senha: senha ? md5(senha) : null,
     email,
