@@ -119,7 +119,6 @@ describe(('Order Flow Tests'), () => {
       expect(response.data[0].valor).toBeCloseTo(newOrderWithAbsoluteCoupon.precofinal / 2, -1);
     });
     test('Pay All Installments', async () => {
-      console.log(newInstallments);
       const responseOne = await api.put('/api/installments', {
         id: newInstallments[0].id,
         status: 'aprovado',

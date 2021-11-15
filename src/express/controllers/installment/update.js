@@ -45,8 +45,6 @@ const isLastInstallment = async (id) => {
     }),
   });
 
-  console.log(orderInstallments);
-
   if (orderInstallments.length === 1) return true;
 
   _.remove(orderInstallments, (_installment) => _installment.id === id);
@@ -57,7 +55,6 @@ const isLastInstallment = async (id) => {
 const updateOrderAndInstallment = async (id, params) => {
   const installment = await getInstallment({ id });
   const t = await sequelize.transaction();
-  console.log(params);
   try {
     await updateOrder({
       id: installment.pedidoId,

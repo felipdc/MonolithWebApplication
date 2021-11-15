@@ -42,8 +42,6 @@ const validateCouponUsage = async (body) => {
 const createCouponUsage = async (body, transaction = null) => {
   const couponUsageCreationParams = getCouponUsageCreationParams(body);
 
-  console.log(couponUsageCreationParams);
-
   if (!couponUsageCreationParams) {
     throw new ResponseError(400, 'Error. Invalid Params');
   }

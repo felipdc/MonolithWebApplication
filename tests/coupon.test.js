@@ -69,7 +69,6 @@ describe(('Product CRUD Tests'), () => {
         });
         fail('Expected failure response');
       } catch (err) {
-        console.log(err);
         expect(err.response.status).toEqual(404);
       }
     });

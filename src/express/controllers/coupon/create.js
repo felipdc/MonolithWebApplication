@@ -34,8 +34,6 @@ const getCouponCreationParams = (params) => {
 const createCoupon = async (body) => {
   const couponCreationParams = getCouponCreationParams(body);
 
-  console.log(couponCreationParams);
-
   if (!couponCreationParams) {
     throw new ResponseError(400, 'Error. Invalid Params');
   }
