@@ -1,7 +1,7 @@
 postgres:
   container_name: postgres
   restart: always
-  image: postgres:latest
+  image: postgres:12.9-alpine
   volumes:
     - ./data:/var/lib/postgresql/data
   ports:
